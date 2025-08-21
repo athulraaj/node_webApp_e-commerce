@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Not Found - ShoeRack</title>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="/css/font-awesome.min.css">
+    <link type="text/css" rel="stylesheet" href="/css/404.css">
+</head>
+<body>
+    <div class="bg-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
+    <div class="container">
+        <div class="error-content">
+            <div class="logo">
+                <h1>SHOE <span>RACK</span></h1>
+            </div>
+
+            <div class="shoe-icon">
+                <i class="fa fa-shoe-prints" aria-hidden="true"></i>
+            </div>
+
+            <div class="error-number">404</div>
+            
+            <h1 class="error-title">Oops! Page Not Found</h1>
+            
+            <p class="error-message">
+                Looks like this page took a wrong step! The page you're looking for might have been moved, 
+                deleted, or you might have entered the wrong URL. Don't worry, even the best shoes sometimes 
+                lose their way.
+            </p>
+
+            <div class="btn-container">
+                <a href="/" class="btn btn-primary" onclick="goHome(this)" aria-label="Go to homepage">
+                    <i class="fa fa-home"></i>
+                    Go to Home
+                </a>
+                <a href="#" class="btn btn-secondary" onclick="goBack()" aria-label="Go back to previous page">
+                    <i class="fa fa-arrow-left"></i>
+                    Go Back
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function goHome(button) {
+            button.classList.add('loading');
+            button.innerHTML = '<i class="fa fa-home"></i> Going Home...';
+            setTimeout(() => {
+                window.location.href = '/';
+            }, 1000);
+        }
+
+        function goBack() {
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                goHome(document.querySelector('.btn-primary'));
+            }
+        }
+
+        document.addEventListener('mousemove', (e) => {
+            const shapes = document.querySelectorAll('.shape');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            shapes.forEach((shape, index) => {
+                const speed = (index + 1) * 0.5;
+                shape.style.transform = `translate(${x * speed * 10}px, ${y * speed * 10}px) rotate(${x * 360}deg)`;
+            });
+        });
+
+        let konamiCode = [];
+        const konamiPattern = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight'];
+        
+        document.addEventListener('keydown', (e) => {
+            konamiCode.push(e.code);
+            if (konamiCode.length > konamiPattern.length) {
+                konamiCode.shift();
+            }
+            
+            if (JSON.stringify(konamiCode) === JSON.stringify(konamiPattern)) {
+                document.querySelector('.error-message').innerHTML = "🎉 Konami code activated! You found the secret shoe stash! 👟✨";
+                document.querySelector('.shoe-icon').style.animation = 'bounce 0.5s infinite';
+            }
+        });
+    </script>
+</body>
+</html>
